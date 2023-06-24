@@ -1,0 +1,25 @@
+This is the code for subspace wireguard vpn server launcher at https://launchwg.lunanode.com
+
+To run, simply:
+
+	go run main.go
+
+When a user requests to provision a VM, the webserver will read run.sh and
+replace parameters with user-specified configuration. The resulting script will
+be passed as a startup script to the VM, via cloud-init.
+
+To run using docker compose with ACME https reverse proxy:
+
+	echo "LE_EMAIL=myemail@mydomain.com" > .env
+	echo "LE_HOSTNAME=mydomain.lndyn.com" >> .env
+	sudo docker compose up -d
+
+It requires access to bind to ports 80 and 443 when using https reverse proxy.
+
+Updating:
+
+	git pull origin master
+	sudo docker compose restart launcher-go
+
+Though docker restart is not needed if only items in the static folder
+are modified. If the go file or run.sh file is modified, it must be restarted.
