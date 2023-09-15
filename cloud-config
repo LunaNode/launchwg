@@ -71,3 +71,4 @@ runcmd:
   - echo "net.ipv6.conf.all.forwarding=1" >> /etc/sysctl.conf
   - sysctl -p
   - docker compose -f /root/subspace/docker-compose.yml up -d
+  - sleep 10 && reboot
