@@ -19,6 +19,7 @@ write_files:
          volumes:
           - /opt/docker/subspace:/data
           - /opt/docker/dnsmasq:/etc/dnsmasq.d
+          - /root/subspace/dnsmasq-exec-override:/etc/service/dnsmasq/run
          restart: always
          environment:
           - SUBSPACE_HTTP_HOST=[HOSTNAME]
@@ -39,6 +40,13 @@ write_files:
          network_mode: "host"
     owner: root
     permissions: '0644'
+    defer: true
+  - path: /root/subspace/dnsmasq-exec-override
+    content: |
+      #!/bin/sh
+      exec /usr/sbin/dnsmasq --keep-in-foreground
+    owner: root
+    permissions: '0755'
     defer: true
 runcmd:
   - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
